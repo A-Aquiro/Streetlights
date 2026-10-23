@@ -4,7 +4,7 @@
 
 StreetLights is a web app made for the Hack For RVA in March 2026. Search an address to find nearby road, utility, school, park, and other public projects around Richmond, Virginia.
 
-**[Open the live demo](https://ang-aq.github.io/Streetlights/)**
+**[Open the live demo](https://a-aquiro.github.io/Streetlights/)**
 
 ## 🏙️ About StreetLights
 
