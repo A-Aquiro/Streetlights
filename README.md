@@ -2,7 +2,7 @@
 
 **Find out what's happening with Richmond's infrastructure projects**
 
-StreetLights is a web app made for the Richmond Civic Hackathon in March 2026. Search an address to find nearby road, utility, school, park, and other public projects around Richmond, Virginia.
+StreetLights is a web app made for the Hack For RVA in March 2026. Search an address to find nearby road, utility, school, park, and other public projects around Richmond, Virginia.
 
 **[Open the live demo](https://ang-aq.github.io/Streetlights/)**
 
@@ -23,7 +23,7 @@ Search for a Richmond address, explore nearby projects, and see what the work is
 
 Project locations are approximate, and the project information comes from the City of Richmond CIP Dashboard. StreetLights is a community project, not an official City service.
 
-## 🧰 Tech
+## 🚗 Other info
 
 **Frontend:** React, TypeScript, and Vite
 
@@ -33,25 +33,4 @@ Project locations are approximate, and the project information comes from the Ci
 
 **Project data:** City of Richmond CIP Dashboard
 
-## 💻 Run it locally
-
-You'll need Node.js and npm installed.
-
-```bash
-git clone https://github.com/A-Aquiro/Streetlights.git
-cd Streetlights
-npm install
-npm run dev
-```
-
-To make a production build:
-
-```bash
-npm run build
-```
-
-## 👋 Other info
-
 **Made for:** Richmond Civic Hackathon · March 2026 · Pillar 6 — Transportation Project Visibility
-
-**Live demo:** [ang-aq.github.io/Streetlights](https://ang-aq.github.io/Streetlights/)
