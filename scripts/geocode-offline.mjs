@@ -1,7 +1,7 @@
 /**
- * Offline geocoder for Richmond CIP projects.
- * Uses a hardcoded lookup table of Richmond streets/landmarks.
- * Run with: node scripts/geocode-offline.mjs
+ * offline geocoder for richmond projects
+ * uses a lookup table of local streets and landmarks
+ * run with: node scripts/geocode-offline.mjs
  */
 
 import fs from 'fs';
@@ -13,10 +13,10 @@ const ROOT = path.resolve(__dirname, '..');
 
 const RICHMOND_CENTER = { lat: 37.5407, lng: -77.4360 };
 
-// ── Richmond street / landmark coordinate lookup ─────────────────────────────
-// Each entry: [lat, lng, ...keywords] (case-insensitive substring match)
+// local street and landmark coordinates
+// each entry has a latitude, longitude, and matching keywords
 const LOOKUP = [
-  // Streets / corridors
+  // streets
   [37.5329, -77.4355, 'w main st', 'west main', 'w. main', 'main street safety', 'main street'],
   [37.5330, -77.4290, 'e main', 'east main', 'shockoe', 'nicholson'],
   [37.5415, -77.4394, 'broad street', 'broad st', 'biotech', 'kanawha plaza', 'clay street', 'clay st'],
@@ -57,7 +57,7 @@ const LOOKUP = [
   [37.5290, -77.4370, 'highland grove', 'dove street', 'shockoe project', 'shockoe valley'],
   [37.5295, -77.4337, 'biotech'],
   [37.5330, -77.4280, 'shockoe bottom', '17th street', '30th street'],
-  // South / Southside
+  // southside
   [37.5100, -77.4500, 'hull street improvements phase i', 'hey road to warwick', 'hey road'],
   [37.4900, -77.5100, 'hull street improvements phase ii', 'chippenham', 'hey road', 'hull street improvements phase iii', 'warwick road to arizona'],
   [37.5050, -77.4560, 'hull street', 'hull st', 'hull street (cowardin', 'hull street (richmond to commerce'],
@@ -76,7 +76,7 @@ const LOOKUP = [
   [37.4970, -77.4680, 'belt blvd', 'belt boulevard'],
   [37.4950, -77.4750, 'south gardens', 'swansboro area'],
   [37.5090, -77.4500, 'jeff-davis', 'jefferson davis'],
-  // Parks / facilities
+  // parks and facilities
   [37.5050, -77.4640, 'lucks field', 'james river branch'],
   [37.5390, -77.5000, 'westlake hills'],
   [37.5660, -77.4960, 'westlake'],
@@ -85,22 +85,22 @@ const LOOKUP = [
   [37.5050, -77.4640, 'fonticello park', 'fonticello'],
   [37.5500, -77.5000, 'humphrey calder', 'smith peters'],
   [37.5270, -77.5010, 'westover hills', 'westover hills community'],
-  // Bridges
+  // bridges
   [37.5498, -77.4620, 'lombardy street csx bridge'],
   [37.5220, -77.4380, 'mayo bridge', 'hull street over manchester canal'],
   [37.5540, -77.4700, 'arthur ashe boulevard bridge'],
   [37.5090, -77.4740, 'lynhaven avenue over broad rock creek'],
   [37.5390, -77.4275, 'east broad street ravine bridge'],
-  // Trails / greenways
+  // trails
   [37.5100, -77.4300, 'fall line trail - commerce road'],
   [37.5200, -77.4450, 'fall line trail - transit improvements over manchester'],
   [37.5400, -77.4600, 'science museum brt'],
   [37.5320, -77.4600, 'capital trail', 'virginia capital trail connector'],
   [37.5170, -77.4650, 'james river branch trail'],
-  // Sewers / utilities
+  // utilities
   [37.5360, -77.4080, 'williamsburg avenue combined sewer', 'combined sewer overflow'],
   [37.5310, -77.4150, 'chimborazo drop shaft', 'chimborazo interceptor'],
-  // Neighborhoods / areas
+  // neighborhoods
   [37.5610, -77.4770, 'colonial place'],
   [37.5640, -77.4800, 'westhampton area'],
   [37.5440, -77.4166, 'chimborazo area'],
@@ -108,11 +108,11 @@ const LOOKUP = [
   [37.5060, -77.4640, 'jeff-davis neighborhood'],
   [37.5290, -77.4370, 'highland grove'],
   [37.5350, -77.4180, 'e. richmond'],
-  // Misc
+  // other locations
   [37.5330, -77.4350, 'mcguire', 'chapel drive'],
 ];
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
+// look up coordinates and format project data
 function matchLookup(text) {
   const lower = text.toLowerCase();
   for (const [lat, lng, ...keywords] of LOOKUP) {
@@ -207,7 +207,7 @@ function plainSummary(phase, category, budget, completion) {
   return `This ${category.toLowerCase()} project is currently ${verb} with a total budget of ${cost}${comp}.`;
 }
 
-// ── Main ─────────────────────────────────────────────────────────────────────
+// geocode projects using the local lookup table
 const csvPath = path.join(ROOT, 'docs', 'COR_CIP_Dashboard_projects.csv');
 const outPath = path.join(ROOT, 'src', 'data', 'projects.json');
 
@@ -228,7 +228,7 @@ const projects = rows.map((row, i) => {
   const budget = parseCost(row['Cost']);
   const completion = (row['Completion'] || 'TBD').trim() || 'TBD';
 
-  // Try matching name first, then location
+  // check the project name, then its location
   const hit = matchLookup(name) || matchLookup(location);
 
   let lat, lng, geocodeFallback;

@@ -52,7 +52,7 @@ export default function SearchBar({
 
   return (
     <div className="space-y-1.5">
-      {/* Input row */}
+      {/* address input */}
       <form onSubmit={handleSubmit} className="flex gap-2">
         <input
           type="text"
@@ -80,12 +80,12 @@ export default function SearchBar({
         </button>
       </form>
 
-      {/* Error */}
+      {/* search error */}
       {error && (
         <p className="text-red-600 text-xs">{error}</p>
       )}
 
-      {/* Results + radius row */}
+      {/* search result and distance options */}
       {searchLocation ? (
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
           <span>
@@ -113,7 +113,7 @@ export default function SearchBar({
           </span>
         </div>
       ) : (
-        /* Sample addresses */
+        /* example addresses */
         <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-gray-400">
           <span>Try:</span>
           {SAMPLE_ADDRESSES.map(addr => (

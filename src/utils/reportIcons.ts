@@ -1,10 +1,10 @@
 import type { ReportTypeId } from '../types/report';
 
-/** Returns the SVG inner elements for each report type using lucide icon paths (24×24 viewBox). */
+/** returns the svg paths for each report type */
 export function reportIconPaths(typeId: ReportTypeId): string {
   const s = 'stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"';
   switch (typeId) {
-    case 'streetlight': // Gooseneck street lamp: pole + curved arm + round lamp + light rays
+    case 'streetlight': // streetlight and light rays
       return `
         <line x1="12" y1="22" x2="12" y2="10" ${s}/>
         <path d="M12 10 Q11 5 7 5" ${s}/>
@@ -13,7 +13,7 @@ export function reportIconPaths(typeId: ReportTypeId): string {
         <line x1="7" y1="5.5" x2="7" y2="9" ${s}/>
         <line x1="8.5" y1="5.5" x2="9.5" y2="8.5" ${s}/>
       `;
-    case 'stoplight': // Traffic light housing + 3 signal circles + pole
+    case 'stoplight': // traffic light and post
       return `
         <rect x="7.5" y="1.5" width="9" height="15" rx="1.5" ${s}/>
         <circle cx="12" cy="5.5" r="1.8" ${s}/>
@@ -21,7 +21,7 @@ export function reportIconPaths(typeId: ReportTypeId): string {
         <circle cx="12" cy="12.5" r="1.8" ${s}/>
         <line x1="12" y1="16.5" x2="12" y2="22" ${s}/>
       `;
-    case 'pothole': // Construction
+    case 'pothole': // road work
       return `
         <rect x="2" y="6" width="20" height="8" rx="1" ${s}/>
         <path ${s} d="M17 14v7"/>
@@ -32,20 +32,20 @@ export function reportIconPaths(typeId: ReportTypeId): string {
         <path ${s} d="m14 6 7.7 7.7"/>
         <path ${s} d="m8 6 8 8"/>
       `;
-    case 'unpaved': // Milestone
+    case 'unpaved': // unpaved road
       return `
         <path ${s} d="M12 13v8"/>
         <path ${s} d="M12 3v3"/>
         <path ${s} d="M18.172 6a2 2 0 0 1 1.414.586l2.06 2.06a1.207 1.207 0 0 1 0 1.708l-2.06 2.06a2 2 0 0 1-1.414.586H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z"/>
       `;
-    case 'sidewalk': // Footprints
+    case 'sidewalk': // sidewalk
       return `
         <path ${s} d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/>
         <path ${s} d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/>
         <path ${s} d="M16 17h4"/>
         <path ${s} d="M4 13h4"/>
       `;
-    case 'flooding': // Waves
+    case 'flooding': // flood water
       return `
         <path ${s} d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
         <path ${s} d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
@@ -56,8 +56,7 @@ export function reportIconPaths(typeId: ReportTypeId): string {
   }
 }
 
-/** Builds a full SVG string for use in icon tiles.
- * @deprecated Use the ReportIcon React component instead. */
+/** @deprecated use the report icon component instead */
 export function reportIconSvg(typeId: ReportTypeId, size = 28, color = '#f97316'): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="12" fill="${color}"/>
@@ -65,8 +64,7 @@ export function reportIconSvg(typeId: ReportTypeId, size = 28, color = '#f97316'
   </svg>`;
 }
 
-/** Builds the HTML string for a Leaflet DivIcon report marker.
- *  Orange circle with white icon + optional blue likes badge. */
+/** creates the html for a report marker */
 export function reportMarkerHtml(typeId: ReportTypeId, bgColor: string, likes: number): string {
   const badge = likes > 0
     ? `<div style="

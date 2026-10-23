@@ -5,8 +5,7 @@ import { createPinSvgString } from '../utils/markerColors';
 const PHASES: ProjectPhase[] = ['Planning', 'Design', 'Construction', 'Complete', 'On Hold'];
 
 interface MapLegendProps {
-  /** When true, the expanded panel opens as an absolute dropdown below the button
-   *  instead of replacing the button in-place. Use for toolbar contexts. */
+  /** opens the phase key below the button in the toolbar */
   dropdown?: boolean;
 }
 
@@ -51,7 +50,7 @@ export default function MapLegend({ dropdown = false }: MapLegendProps) {
     </button>
   );
 
-  // ── Dropdown mode (toolbar): button stays, panel floats below ─────────────
+  // keep the button visible and show the phase key below it
   if (dropdown) {
     return (
       <div className="relative">
@@ -65,7 +64,7 @@ export default function MapLegend({ dropdown = false }: MapLegendProps) {
     );
   }
 
-  // ── In-place mode (map overlay): component swaps between button and panel ──
+  // on the map, swap the button for the phase key
   if (!open) {
     return (
       <button

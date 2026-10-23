@@ -20,7 +20,7 @@ export interface SearchLocation {
   displayName: string;
 }
 
-// ─── Reporting state machine ───────────────────────────────────────────────────
+// tracks the steps for creating a report
 type ReportingStep =
   | { kind: 'idle' }
   | { kind: 'intent' }
@@ -44,9 +44,9 @@ function useIsDesktop() {
 const RADIUS_OPTIONS = [0.25, 0.5, 1, 2, 5] as const;
 const DEFAULT_RADIUS = 1;
 
-// Height of the bottom sheet in peek state
+// bottom sheet height when peeking
 const PEEK_HEIGHT = 260;
-// Height of the bottom sheet in collapsed state (handle bar only)
+// bottom sheet height when collapsed
 const COLLAPSED_HEIGHT = 44;
 
 export default function App() {
@@ -58,26 +58,26 @@ export default function App() {
   const [sheetSnap, setSheetSnap] = useState<'collapsed' | 'peek'>('peek');
   const isDesktop = useIsDesktop();
 
-  // Reporting state machine
+  // track the current report step
   const { reports, priorityReports, likedIds, addReport, likeReport } = useReports();
   const [reportingStep, setReportingStep] = useState<ReportingStep>(IDLE);
   const [showPriorityList, setShowPriorityList] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
 
-  // Collapse the sheet on mobile when the info modal opens; restore when it closes
+  // hide the sheet while the info window is open
   useEffect(() => {
     if (!isDesktop) {
       setSheetSnap(showInfo ? 'collapsed' : 'peek');
     }
   }, [showInfo, isDesktop]);
 
-  // Category-filtered project list
+  // filter projects by category
   const categoryFiltered = useMemo(() => {
     if (activeCategories.size === 0) return projects;
     return projects.filter(p => activeCategories.has(p.category));
   }, [activeCategories]);
 
-  // Proximity-filtered + sorted list
+  // show nearby projects in distance order
   const nearbyProjects = useMemo(() => {
     if (!searchLocation) return categoryFiltered;
     return categoryFiltered
@@ -130,7 +130,7 @@ export default function App() {
     setActiveCategories(new Set());
   }, []);
 
-  // Step 1 → 2: user confirmed intent, now picking location
+  // start the report flow
   const handleStartReport = useCallback(() => {
     setReportingStep({ kind: 'intent' });
   }, []);
@@ -143,7 +143,7 @@ export default function App() {
     setReportingStep(IDLE);
   }, []);
 
-  // Step 2 → 3: map tapped while picking location
+  // move to type selection after the map is tapped
   const handleMapClick = useCallback((lat: number, lng: number) => {
     setReportingStep(prev => {
       if (prev.kind === 'pickingLocation') {
@@ -153,7 +153,7 @@ export default function App() {
     });
   }, []);
 
-  // Step 3 → idle: report submitted
+  // save the report and finish
   const handleReportSubmit = useCallback((typeId: import('./types/report').ReportTypeId) => {
     setReportingStep(prev => {
       if (prev.kind === 'pickingType') {
@@ -172,7 +172,7 @@ export default function App() {
 
   const displayProjects = searchLocation ? nearbyProjects : categoryFiltered;
 
-  // Sheet handle label
+  // label the sheet with the current selection
   const sheetLabel = selectedProject
     ? selectedProject.title
     : searchLocation
@@ -198,7 +198,7 @@ export default function App() {
 
 
 
-      {/* Picking-location banner — shown across the top of the map */}
+      {/* shown while choosing a report location */}
       {isPickingLocation && (
         <div className="flex-none flex items-center justify-between px-4 py-2 bg-amber-500 text-white text-sm font-medium z-[600]">
           <span>Tap the map to place your report pin</span>
@@ -211,11 +211,11 @@ export default function App() {
         </div>
       )}
 
-      {/* Content area — responsive layout */}
+      {/* show the layout for this screen size */}
       {isDesktop ? (
-        /* Desktop: map + side panel side by side */
+        /* desktop shows the map beside the project panel */
         <div className="flex flex-row flex-1 overflow-hidden">
-          {/* Map fills remaining width */}
+          {/* map fills the available space */}
           <div className="flex-1 relative">
             <MapView
               projects={displayProjects}
@@ -233,7 +233,7 @@ export default function App() {
             />
           </div>
 
-          {/* Side panel */}
+          {/* project panel */}
           <div className="flex-none w-80 h-full border-l border-gray-200 bg-white flex flex-col overflow-hidden">
             {selectedProject ? (
               <>
@@ -268,10 +268,10 @@ export default function App() {
           </div>
         </div>
       ) : (
-        /* Mobile: map full size, bottom sheet overlay */
+        /* mobile shows the map behind a bottom sheet */
         <div className="flex-1 relative overflow-hidden">
 
-          {/* Map — always full size */}
+          {/* map fills the screen */}
           <div className="absolute inset-0">
             <MapView
               projects={displayProjects}
@@ -290,9 +290,9 @@ export default function App() {
             />
           </div>
 
-          {/* Mobile controls bar — transparent overlay, top-right of map */}
+          {/* map controls */}
           <div className="absolute top-2 right-2 z-[500] flex items-center gap-2">
-            {/* Amber circle: starts the new report flow */}
+            {/* start a new report */}
             <button
               onClick={handleStartReport}
               title="Report an infrastructure issue"
@@ -304,7 +304,7 @@ export default function App() {
                 <circle cx="10" cy="14.5" r="1.1" fill="white" />
               </svg>
             </button>
-            {/* Community Reports link */}
+            {/* open community reports */}
             <button
               onClick={() => setShowPriorityList(true)}
               className="text-xs font-medium text-amber-700 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-full shadow whitespace-nowrap hover:bg-white transition-colors"
@@ -320,7 +320,7 @@ export default function App() {
               transition: 'height 250ms ease',
             }}
           >
-            {/* Handle bar — tap to toggle collapsed ↔ peek */}
+            {/* tap to open or close the sheet */}
             <div
               className="flex-none flex items-center justify-between px-4 cursor-pointer select-none border-b border-gray-100"
               style={{ minHeight: COLLAPSED_HEIGHT }}
@@ -332,7 +332,7 @@ export default function App() {
                   {sheetLabel}
                 </span>
               </div>
-              {/* Chevron: ∧ when collapsed (tap to open), ∨ when peeking (tap to close) */}
+              {/* shows whether the sheet is open */}
               <svg
                 width="14" height="14" viewBox="0 0 14 14" fill="none"
                 className={`flex-none text-gray-400 transition-transform duration-200 ${sheetSnap === 'collapsed' ? 'rotate-180' : ''}`}
@@ -341,7 +341,7 @@ export default function App() {
               </svg>
             </div>
 
-            {/* Sheet content — scrollable project list or detail */}
+            {/* project list or details */}
             <div
               className="flex-1 overflow-y-auto"
               style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }}
@@ -369,7 +369,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Step 1: intent prompt */}
+      {/* confirm before creating a report */}
       {reportingStep.kind === 'intent' && (
         <ReportIntentPrompt
           onConfirm={handleIntentConfirm}
@@ -377,7 +377,7 @@ export default function App() {
         />
       )}
 
-      {/* Step 3: type picker modal */}
+      {/* choose a report type */}
       {reportingStep.kind === 'pickingType' && (
         <ReportModal
           lat={reportingStep.lat}
@@ -387,7 +387,7 @@ export default function App() {
         />
       )}
 
-      {/* Priority list panel */}
+      {/* community report list */}
       {showPriorityList && (
         <PriorityList
           reports={priorityReports}

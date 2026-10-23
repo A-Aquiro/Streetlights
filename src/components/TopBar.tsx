@@ -59,10 +59,10 @@ export default function TopBar({
   return (
     <div className="flex-none bg-white border-b border-gray-200 shadow-sm z-10">
 
-      {/* ── Main row ── */}
+      {/* main row */}
       <div className="flex items-center gap-2 px-3 py-2">
 
-        {/* Logo */}
+        {/* app logo */}
         <div className="flex items-center gap-1.5 flex-none select-none">
           <svg width="20" height="28" viewBox="0 0 32 42" fill="none" aria-hidden="true">
             <circle cx="27" cy="11" r="8" fill="#fbbf24" opacity="0.18"/>
@@ -76,7 +76,7 @@ export default function TopBar({
           </span>
         </div>
 
-        {/* Search form */}
+        {/* address search */}
         <form onSubmit={handleSubmit} className="flex flex-1 gap-1.5 min-w-0">
           <div className="relative flex-1 min-w-0">
             <input
@@ -108,10 +108,10 @@ export default function TopBar({
           </button>
         </form>
 
-        {/* Right controls */}
+        {/* controls */}
         <div className="flex items-center gap-1 flex-none">
 
-          {/* Info */}
+          {/* app information */}
           <button
             onClick={() => onShowInfo(true)}
             title="About StreetLights"
@@ -123,7 +123,7 @@ export default function TopBar({
             </svg>
           </button>
 
-          {/* GitHub */}
+          {/* github link */}
           <a
             href="https://github.com/Ang-aq/Streetlights"
             target="_blank"
@@ -138,7 +138,7 @@ export default function TopBar({
         </div>
       </div>
 
-      {/* ── Secondary row: radius (after search) or sample addresses (before) ── */}
+      {/* distance options or example addresses */}
       {searchLocation ? (
         <div className="flex flex-wrap items-center gap-2 px-3 pb-2 text-xs text-gray-500">
           <span>
@@ -182,7 +182,7 @@ export default function TopBar({
 
       {error && <p className="text-red-500 text-xs px-3 pb-2">{error}</p>}
 
-      {/* ── Info modal ── */}
+      {/* app information window */}
       {showInfo && (
         <div
           className="fixed inset-0 z-[9999] flex items-center justify-center"

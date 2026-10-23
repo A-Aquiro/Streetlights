@@ -11,13 +11,13 @@ interface Props {
 
 export default function ReportModal({ lat, lng, onSubmit, onCancel }: Props) {
   return (
-    // Backdrop
+    // close the picker when the backdrop is clicked
     <div
       className="fixed inset-0 z-[1200] flex items-end justify-center"
       style={{ background: 'rgba(0,0,0,0.45)' }}
       onClick={onCancel}
     >
-      {/* Bottom sheet */}
+      {/* report type picker */}
       <div
         className="w-full max-w-lg bg-white rounded-t-2xl p-5 pb-8 shadow-2xl"
         onClick={e => e.stopPropagation()}
@@ -27,7 +27,7 @@ export default function ReportModal({ lat, lng, onSubmit, onCancel }: Props) {
           {lat.toFixed(5)}, {lng.toFixed(5)} &mdash; tap a category below
         </p>
 
-        {/* 3×2 icon grid */}
+        {/* report type options */}
         <div className="grid grid-cols-3 gap-3">
           {REPORT_TYPES.map(type => (
             <button

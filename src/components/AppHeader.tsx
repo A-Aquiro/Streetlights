@@ -2,7 +2,7 @@ export default function AppHeader() {
   return (
     <header className="flex-none bg-slate-900 text-white px-4 py-2.5 flex items-center gap-3">
 
-      {/* Streetlight icon */}
+      {/* streetlight icon */}
       <svg
         width="28"
         height="38"
@@ -12,23 +12,23 @@ export default function AppHeader() {
         aria-hidden="true"
         className="flex-none"
       >
-        {/* Ambient glow behind lamp */}
+        {/* glow around the lamp */}
         <circle cx="27" cy="11" r="8" fill="#fbbf24" opacity="0.18"/>
-        {/* Pole */}
+        {/* lamp post */}
         <rect x="14" y="18" width="4" height="24" rx="2" fill="white"/>
-        {/* Curved arm */}
+        {/* lamp arm */}
         <path d="M16 18 Q16 6 26 6" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-        {/* Lamp body */}
+        {/* lamp housing */}
         <rect x="21" y="3" width="11" height="6" rx="2.5" fill="white"/>
-        {/* Amber light lens */}
+        {/* light */}
         <ellipse cx="26.5" cy="10" rx="4" ry="2.2" fill="#fbbf24" opacity="0.95"/>
-        {/* Light cone rays */}
+        {/* light rays */}
         <line x1="22" y1="11" x2="17" y2="20" stroke="#fbbf24" strokeWidth="1.2" opacity="0.45" strokeLinecap="round"/>
         <line x1="26.5" y1="12" x2="26.5" y2="22" stroke="#fbbf24" strokeWidth="1.2" opacity="0.45" strokeLinecap="round"/>
         <line x1="31" y1="11" x2="36" y2="20" stroke="#fbbf24" strokeWidth="1.2" opacity="0.45" strokeLinecap="round"/>
       </svg>
 
-      {/* Title + subtitle */}
+      {/* title and subtitle */}
       <div className="flex-1 min-w-0">
         <h1 className="font-brand text-xl font-bold leading-tight tracking-tight">
           <span className="text-white">Street</span>
@@ -39,7 +39,7 @@ export default function AppHeader() {
         </p>
       </div>
 
-      {/* Right side */}
+      {/* right side */}
       <div className="flex items-center gap-2 flex-none">
         <a
           href="https://github.com/Ang-aq/Streetlights"

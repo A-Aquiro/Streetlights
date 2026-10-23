@@ -1,11 +1,11 @@
 /**
- * One-time geocoding script. Run with:
+ * one-time geocoding script. run with:
  *   node --experimental-vm-modules scripts/geocode.mjs
  * or after npm install:
  *   node scripts/geocode.mjs
  *
- * Reads docs/COR_CIP_Dashboard_projects.csv
- * Writes src/data/projects.json
+ * reads the project csv
+ * writes the project json
  */
 
 import fs from 'fs';
@@ -16,9 +16,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 const RICHMOND_CENTER = { lat: 37.5407, lng: -77.4360 };
-const DELAY_MS = 1200; // Nominatim: max 1 req/sec
+const DELAY_MS = 1200; // wait between nominatim requests
 
-// ── CSV parser (handles quoted fields with commas) ──────────────────────────
+// parse csv rows, including quoted values
 function parseCSV(text) {
   const lines = text.split(/\r?\n/).filter(Boolean);
   const headers = splitCSVLine(lines[0]);
@@ -47,7 +47,7 @@ function splitCSVLine(line) {
   return result;
 }
 
-// ── Category normaliser ─────────────────────────────────────────────────────
+// standardize project categories
 function normaliseCategory(raw) {
   const r = (raw || '').toLowerCase();
   if (r.includes('pedestrian') || r.includes('bike') || r.includes('trail')) return 'Roads & Bridges';
@@ -61,7 +61,7 @@ function normaliseCategory(raw) {
   return 'Other';
 }
 
-// ── Phase normaliser ────────────────────────────────────────────────────────
+// standardize project phases
 function normalisePhase(raw) {
   const r = (raw || '').toLowerCase();
   if (r.includes('complet')) return 'Complete';
@@ -72,14 +72,14 @@ function normalisePhase(raw) {
   return 'Planning';
 }
 
-// ── Cost parser ─────────────────────────────────────────────────────────────
+// read the project cost
 function parseCost(raw) {
   if (!raw) return 0;
   const n = parseFloat(raw.replace(/[$,\s]/g, ''));
   return isNaN(n) ? 0 : n;
 }
 
-// ── Plain summary ───────────────────────────────────────────────────────────
+// create a short project summary
 function phaseToVerb(phase) {
   switch (phase) {
     case 'Planning':    return 'being planned';
@@ -103,19 +103,19 @@ function plainSummary(title, phase, category, budget, completion) {
   return `This ${category.toLowerCase()} project is currently ${verb} with a total budget of ${cost}${comp}.`;
 }
 
-// ── Build geocoding query ───────────────────────────────────────────────────
+// prepare a location for geocoding
 function buildQuery(location, name) {
-  // Pull first meaningful street/address fragment
+  // keep the useful part of the address
   let loc = location
-    .replace(/\bto\b.*/i, '')          // take only up to "to"
-    .replace(/\bfrom\b.*/i, '')        // or "from"
-    .replace(/\bbetween\b.*/i, '')     // or "between"
-    .replace(/\(.*?\)/g, '')           // strip parentheticals
-    .replace(/@/g, '&')               // @ → & (intersection notation)
-    .replace(/[,;]+.*/, '')            // take first segment before comma
+    .replace(/\bto\b.*/i, '')          // remove text after "to"
+    .replace(/\bfrom\b.*/i, '')        // remove text after "from"
+    .replace(/\bbetween\b.*/i, '')     // remove text after "between"
+    .replace(/\(.*?\)/g, '')           // remove parenthetical notes
+    .replace(/@/g, '&')               // use an ampersand for intersections
+    .replace(/[,;]+.*/, '')            // keep the first address segment
     .trim();
 
-  // If loc is very vague, fall back to project name keywords
+  // use the project name if the location is unclear
   if (loc.length < 6 || /various|area|neighborhood/i.test(loc)) {
     loc = name.replace(/Phase \w+/gi, '').replace(/[-–]/g, ' ').trim();
   }
@@ -123,7 +123,7 @@ function buildQuery(location, name) {
   return encodeURIComponent(`${loc}, Richmond, Virginia, USA`);
 }
 
-// ── Nominatim fetch ─────────────────────────────────────────────────────────
+// look up the location with nominatim
 async function geocode(location, name) {
   const q = buildQuery(location, name);
   const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${q}&countrycodes=us`;
@@ -143,7 +143,7 @@ async function geocode(location, name) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// ── Main ────────────────────────────────────────────────────────────────────
+// read the csv and write the geocoded projects
 async function main() {
   const csvPath = path.join(ROOT, 'docs', 'COR_CIP_Dashboard_projects.csv');
   const outPath = path.join(ROOT, 'src', 'data', 'projects.json');

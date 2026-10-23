@@ -1,8 +1,8 @@
 import rawProjects from './projects.json';
 import type { CIPProject } from '../types/project';
 
-// The JSON is already typed and has plainSummary generated at geocode time.
-// We cast and re-export as the authoritative project list.
+// project summaries are added when the data is geocoded
+// export the project list used by the app
 export const projects: CIPProject[] = rawProjects as CIPProject[];
 
 export default projects;

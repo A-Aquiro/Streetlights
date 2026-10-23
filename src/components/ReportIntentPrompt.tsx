@@ -5,18 +5,18 @@ interface Props {
 
 export default function ReportIntentPrompt({ onConfirm, onCancel }: Props) {
   return (
-    // Backdrop
+    // close the prompt when the backdrop is clicked
     <div
       className="fixed inset-0 z-[1200] flex items-end justify-center"
       style={{ background: 'rgba(0,0,0,0.45)' }}
       onClick={onCancel}
     >
-      {/* Bottom sheet */}
+      {/* confirmation panel */}
       <div
         className="w-full max-w-lg bg-white rounded-t-2xl p-5 pb-8 shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
-        {/* Icon */}
+        {/* report icon */}
         <div className="flex justify-center mb-3">
           <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100">
             <svg width="24" height="22" viewBox="0 0 20 18" fill="none" aria-hidden="true">

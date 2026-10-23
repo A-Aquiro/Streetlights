@@ -20,19 +20,19 @@ function timeAgo(ts: number): string {
 
 export default function PriorityList({ reports, likedIds, onLike, onLocate, onClose }: Props) {
   return (
-    // Backdrop
+    // close the panel when the backdrop is clicked
     <div
       className="fixed inset-0 z-[1100] flex items-end md:items-center md:justify-end"
       style={{ background: 'rgba(0,0,0,0.4)' }}
       onClick={onClose}
     >
-      {/* Panel */}
+      {/* report panel */}
       <div
         className="w-full md:w-96 md:h-full md:max-h-screen bg-white md:rounded-none
                    rounded-t-2xl shadow-2xl flex flex-col max-h-[80vh]"
         onClick={e => e.stopPropagation()}
       >
-        {/* Header */}
+        {/* panel heading */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 flex-none">
           <div>
             <h2 className="text-sm font-bold text-gray-900">Community Reports</h2>
@@ -49,7 +49,7 @@ export default function PriorityList({ reports, likedIds, onLike, onLocate, onCl
           </button>
         </div>
 
-        {/* List */}
+        {/* reports */}
         <div className="overflow-y-auto flex-1">
           {reports.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-40 text-gray-400">
@@ -68,16 +68,16 @@ export default function PriorityList({ reports, likedIds, onLike, onLocate, onCl
                 const alreadyLiked = likedIds.has(report.id);
                 return (
                   <li key={report.id} className="flex items-center gap-3 px-4 py-3">
-                    {/* Icon */}
+                    {/* report icon */}
                     <ReportIcon typeId={report.typeId} color={typeDef.color} size={36} />
 
-                    {/* Info */}
+                    {/* report details */}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">{typeDef.label}</p>
                       <p className="text-xs text-gray-500">{timeAgo(report.createdAt)}</p>
                     </div>
 
-                    {/* Actions */}
+                    {/* report actions */}
                     <div className="flex items-center gap-2 flex-none">
                       <button
                         onClick={() => onLocate(report)}

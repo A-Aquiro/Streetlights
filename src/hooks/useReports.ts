@@ -52,7 +52,7 @@ export function useReports() {
 
   const likeReport = useCallback((id: string) => {
     setLikedIds(prev => {
-      if (prev.has(id)) return prev; // already liked — no double-like
+      if (prev.has(id)) return prev; // don't allow another like
       const next = new Set(prev);
       next.add(id);
       saveLiked(next);
@@ -65,7 +65,7 @@ export function useReports() {
     });
   }, []);
 
-  // Reports sorted by likes descending
+  // show the most liked reports first
   const priorityReports = [...reports].sort((a, b) => b.likes - a.likes);
 
   return { reports, priorityReports, likedIds, addReport, likeReport };

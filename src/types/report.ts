@@ -9,7 +9,7 @@ export type ReportTypeId =
 export interface ReportTypeDef {
   id: ReportTypeId;
   label: string;
-  color: string; // background color for the marker
+  color: string; // marker background color
 }
 
 export const REPORT_TYPES: ReportTypeDef[] = [
@@ -27,5 +27,5 @@ export interface Report {
   lat: number;
   lng: number;
   likes: number;
-  createdAt: number; // Date.now()
+  createdAt: number; // when the report was created
 }

@@ -7,7 +7,7 @@ interface Props {
   onClear: () => void;
 }
 
-// Derive ordered unique categories from the full project list
+// get each category in display order
 const ALL_CATEGORIES: ProjectCategory[] = [
   'Roads & Bridges',
   'Utilities',
@@ -19,7 +19,7 @@ const ALL_CATEGORIES: ProjectCategory[] = [
 ];
 
 export default function CategoryFilter({ projects, activeCategories, onToggle, onClear }: Props) {
-  // Count per category
+  // count projects in each category
   const counts = ALL_CATEGORIES.reduce<Record<string, number>>((acc, cat) => {
     acc[cat] = projects.filter(p => p.category === cat).length;
     return acc;

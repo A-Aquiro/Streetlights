@@ -13,11 +13,11 @@ import { createColoredIcon } from '../utils/markerColors';
 import { reportMarkerHtml } from '../utils/reportIcons';
 import MapLegend from './MapLegend';
 
-// Richmond, VA center
+// map starts at the center of richmond
 const RICHMOND_CENTER: [number, number] = [37.5407, -77.4360];
 const DEFAULT_ZOOM = 12;
 
-// "You are here" pin — blue pulsing dot
+// blue pin for the searched location
 const YOU_ARE_HERE_ICON = L.divIcon({
   className: '',
   html: `<div style="
@@ -31,7 +31,7 @@ const YOU_ARE_HERE_ICON = L.divIcon({
   iconAnchor: [9, 9],
 });
 
-// ─── Cluster layer managed imperatively ───────────────────────────────────────
+// group project markers into clusters
 interface ClusterLayerProps {
   projects: CIPProject[];
   selectedProjectId: string | null;
@@ -84,7 +84,7 @@ function ClusterLayer({ projects, selectedProjectId, onProjectSelect }: ClusterL
 
       marker.on('click', (e) => {
         L.DomEvent.stopPropagation(e);
-        // Beat 1: press animation
+        // briefly animate the selected marker
         const el = marker.getElement();
         if (el) {
           el.classList.add('marker-pressing');
@@ -98,11 +98,11 @@ function ClusterLayer({ projects, selectedProjectId, onProjectSelect }: ClusterL
     });
   }, [projects, onProjectSelect]);
 
-  // Apply selected/dimmed classes whenever selectedProjectId changes
+  // highlight the selected marker and dim the others
   useEffect(() => {
     markerMapRef.current.forEach((marker, id) => {
       const el = marker.getElement();
-      if (!el) return; // marker is inside a cluster — skip gracefully
+      if (!el) return; // clustered markers have no visible element
       if (selectedProjectId === null) {
         el.classList.remove('marker-selected', 'marker-dimmed');
       } else if (id === selectedProjectId) {
@@ -118,14 +118,14 @@ function ClusterLayer({ projects, selectedProjectId, onProjectSelect }: ClusterL
   return null;
 }
 
-// ─── Report markers layer managed imperatively ────────────────────────────────
+// manage report markers on the map
 interface ReportLayerProps {
   reports: Report[];
   likedIds: Set<string>;
   onReportLike: (id: string) => void;
 }
 
-// Global callback so popup Like buttons (plain HTML) can call back into React
+// let popup buttons send likes back to react
 declare global {
   interface Window {
     __streetlightsLike?: (id: string) => void;
@@ -136,13 +136,13 @@ function ReportLayer({ reports, likedIds, onReportLike }: ReportLayerProps) {
   const map = useMap();
   const markersRef = useRef<L.Marker[]>([]);
 
-  // Keep the global callback in sync
+  // keep the callback up to date
   useEffect(() => {
     window.__streetlightsLike = onReportLike;
   }, [onReportLike]);
 
   useEffect(() => {
-    // Remove all previous report markers
+    // clear the old report markers
     markersRef.current.forEach(m => map.removeLayer(m));
     markersRef.current = [];
 
@@ -195,11 +195,11 @@ function ReportLayer({ reports, likedIds, onReportLike }: ReportLayerProps) {
   return null;
 }
 
-// ─── Map click handler ─────────────────────────────────────────────────────────
+// handle clicks on the map
 function MapClickHandler({ onMapClick }: { onMapClick: (lat: number, lng: number) => void }) {
   useMapEvents({
     click(e) {
-      // Ignore clicks that originated from a marker or popup
+      // ignore clicks on markers and popups
       const target = e.originalEvent.target as HTMLElement;
       if (
         target.closest('.leaflet-marker-icon') ||
@@ -212,7 +212,7 @@ function MapClickHandler({ onMapClick }: { onMapClick: (lat: number, lng: number
   return null;
 }
 
-// ─── Search location marker ────────────────────────────────────────────────────
+// show the searched location
 function SearchMarker({ searchLocation }: { searchLocation: SearchLocation | null }) {
   if (!searchLocation) return null;
   return (
@@ -223,7 +223,7 @@ function SearchMarker({ searchLocation }: { searchLocation: SearchLocation | nul
   );
 }
 
-// ─── Map ref setter ────────────────────────────────────────────────────────────
+// pass the map reference to the parent
 function MapRefSetter({ mapRef }: { mapRef: RefObject<LeafletMap | null> }) {
   const map = useMap();
   useEffect(() => {
@@ -235,7 +235,7 @@ function MapRefSetter({ mapRef }: { mapRef: RefObject<LeafletMap | null> }) {
   return null;
 }
 
-// ─── Main MapView ──────────────────────────────────────────────────────────────
+// render the map and its controls
 interface Props {
   projects: CIPProject[];
   selectedProjectId: string | null;
@@ -299,14 +299,14 @@ export default function MapView({
         <SearchMarker searchLocation={searchLocation} />
       </MapContainer>
 
-      {/* Legend — bottom-left, above the bottom sheet */}
+      {/* phase key above the sheet */}
       {!hideMapControls && (
         <div className="absolute left-2 z-[500] pointer-events-none" style={{ bottom: bottomPad }}>
           <MapLegend />
         </div>
       )}
 
-      {/* Report FAB — bottom-right, above the bottom sheet, warning triangle icon only */}
+      {/* button for starting a report */}
       {!hideMapControls && (
         <button
           onClick={onStartReport}

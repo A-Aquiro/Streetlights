@@ -42,19 +42,19 @@ export default function ProjectDetail({ project, onClose, inline }: Props) {
 
   const body = (
     <div className="px-4 py-3 space-y-4">
-      {/* Location */}
+      {/* project location */}
       <div>
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-0.5">Location</p>
         <p className="text-sm text-gray-700">{project.location}</p>
       </div>
 
-      {/* Plain summary */}
+      {/* plain-language summary */}
       <div className="bg-blue-50 rounded-lg px-3 py-2">
         <p className="text-xs font-semibold text-blue-600 mb-0.5">What this means for residents</p>
         <p className="text-sm text-blue-900 leading-snug">{project.plainSummary}</p>
       </div>
 
-      {/* Description */}
+      {/* project description */}
       {project.description && (
         <div>
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-0.5">Description</p>
@@ -62,7 +62,7 @@ export default function ProjectDetail({ project, onClose, inline }: Props) {
         </div>
       )}
 
-      {/* Budget */}
+      {/* project budget */}
       <div>
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Budget</p>
         <div className="flex justify-between text-sm text-gray-600 mb-1">
@@ -78,7 +78,7 @@ export default function ProjectDetail({ project, onClose, inline }: Props) {
         <p className="text-xs text-gray-400 mt-0.5 text-right">{pct}% spent</p>
       </div>
 
-      {/* Completion */}
+      {/* expected completion */}
       <div className="flex gap-6">
         <div>
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-0.5">Est. Completion</p>
@@ -96,7 +96,7 @@ export default function ProjectDetail({ project, onClose, inline }: Props) {
         )}
       </div>
 
-      {/* SMS CTA — prototype only */}
+      {/* sms lookup prototype */}
       <div className="bg-green-50 border border-green-200 rounded-lg px-3 py-2">
         <p className="text-xs font-semibold text-green-700 mb-0.5">Get project updates</p>
         <p className="text-sm text-green-800 leading-snug">
@@ -106,7 +106,7 @@ export default function ProjectDetail({ project, onClose, inline }: Props) {
         </p>
       </div>
 
-      {/* Project manager */}
+      {/* project manager contact */}
       {(project.manager || project.email || project.phone) && (
         <div>
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Project Manager</p>
@@ -126,7 +126,7 @@ export default function ProjectDetail({ project, onClose, inline }: Props) {
         </div>
       )}
 
-      {/* Data notice */}
+      {/* data source notice */}
       <p className="text-xs text-gray-400 leading-snug pb-2">
         Data sourced from the City of Richmond CIP Dashboard. Project locations are approximate.
         For official information visit the City of Richmond website.
@@ -134,7 +134,7 @@ export default function ProjectDetail({ project, onClose, inline }: Props) {
     </div>
   );
 
-  // Inline mode: render directly inside the bottom sheet (no overlay/backdrop)
+  // show details inside the sheet
   if (inline) {
     return (
       <div>
@@ -144,16 +144,16 @@ export default function ProjectDetail({ project, onClose, inline }: Props) {
     );
   }
 
-  // Default: floating overlay
+  // otherwise, show details in an overlay
   return (
     <div className="fixed inset-0 z-[1000] flex items-end md:items-stretch md:justify-end pointer-events-none">
-      {/* Backdrop */}
+      {/* close details when the backdrop is clicked */}
       <button
         className="absolute inset-0 bg-black bg-opacity-30 pointer-events-auto"
         onClick={onClose}
         aria-label="Close detail panel"
       />
-      {/* Panel */}
+      {/* project details */}
       <div className="relative pointer-events-auto w-full md:w-96 bg-white shadow-xl flex flex-col max-h-[80vh] md:max-h-full overflow-hidden rounded-t-2xl md:rounded-none">
         {header}
         <div className="flex-1 overflow-y-auto">

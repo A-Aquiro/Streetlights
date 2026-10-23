@@ -12,38 +12,38 @@ export function phaseToColor(phase: ProjectPhase): string {
   }
 }
 
-// White SVG icon drawn inside the pin circle (viewBox 0 0 28 36, circle centered at 14,14 r≈14)
+// white svg icons for the phase markers
 function phaseIconSvg(phase: ProjectPhase): string {
   switch (phase) {
     case 'Planning':
-      // Three horizontal lines — to-do / plan list
+      // planning list
       return `
         <line x1="9" y1="10" x2="19" y2="10" stroke="white" stroke-width="2" stroke-linecap="round"/>
         <line x1="9" y1="14" x2="19" y2="14" stroke="white" stroke-width="2" stroke-linecap="round"/>
         <line x1="9" y1="18" x2="15" y2="18" stroke="white" stroke-width="2" stroke-linecap="round"/>
       `;
     case 'Design':
-      // Pencil pointing bottom-left
+      // design pencil
       return `
         <path d="M18 7 L21 10 L11 21 L8 18 Z" fill="white"/>
         <path d="M8 18 L11 21 L9 23 Z" fill="white"/>
         <path d="M18 7 L21 10 L20 11 L17 8 Z" fill="white" opacity="0.6"/>
       `;
     case 'Construction':
-      // Hard hat — dome arc + brim + vent knob
+      // construction hard hat
       return `
         <path d="M8 17 Q8 8 14 8 Q20 8 20 17 Z" fill="white"/>
         <rect x="7" y="17" width="14" height="3" rx="1.5" fill="white"/>
         <rect x="12.5" y="6" width="3" height="4" rx="1" fill="white"/>
       `;
     case 'Complete':
-      // Bold checkmark
+      // completion checkmark
       return `
         <path d="M7 14 L12 19 L21 8" stroke="white" stroke-width="2.5" fill="none"
           stroke-linecap="round" stroke-linejoin="round"/>
       `;
     case 'On Hold':
-      // Pause — two vertical bars
+      // on hold symbol
       return `
         <rect x="8.5" y="8" width="4" height="12" rx="1.5" fill="white"/>
         <rect x="15.5" y="8" width="4" height="12" rx="1.5" fill="white"/>
@@ -56,7 +56,7 @@ function phaseIconSvg(phase: ProjectPhase): string {
   }
 }
 
-// Builds the full SVG string for a pin at any size (preserves aspect ratio 28:36)
+// create a phase marker at the requested size
 export function createPinSvgString(phase: ProjectPhase, width = 28, height = 36): string {
   const color = phaseToColor(phase);
   const icon = phaseIconSvg(phase);
@@ -82,7 +82,7 @@ export function createColoredIcon(phase: ProjectPhase, projectId?: string): L.Di
     className: '',
     html,
     iconSize: [28, 36],
-    iconAnchor: [14, 36],   // tip of the pin
-    popupAnchor: [0, -38],  // popup appears above the pin
+    iconAnchor: [14, 36],   // place the pin by its tip
+    popupAnchor: [0, -38],  // show the popup above the pin
   });
 }

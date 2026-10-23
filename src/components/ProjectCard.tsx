@@ -18,7 +18,7 @@ export default function ProjectCard({ project, selected, onClick }: Props) {
         selected ? 'bg-slate-50 border-l-4 border-l-slate-700' : ''
       }`}
     >
-      {/* Title row */}
+      {/* project title */}
       <div className="flex items-center gap-2">
         <span
           className="flex-none rounded-full"
@@ -36,7 +36,7 @@ export default function ProjectCard({ project, selected, onClick }: Props) {
         )}
       </div>
 
-      {/* Subtitle row */}
+      {/* project summary */}
       <p className="mt-0.5 ml-4 text-xs text-gray-400 leading-tight">
         {project.category} · {project.phase}
       </p>

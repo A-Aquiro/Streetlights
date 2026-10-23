@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import type { SearchLocation } from '../App';
 
-// Richmond, VA bounding box for viewbox parameter
+// keep search results near richmond
 const RICHMOND_VIEWBOX = '-77.6,37.45,-77.3,37.6';
 
 interface NominatimResult {
@@ -26,7 +26,7 @@ export function useNominatim(): UseNominatimReturn {
     setLoading(true);
     setError(null);
 
-    // Append Richmond, VA to bias results locally
+    // favor results near richmond
     const fullQuery = query.toLowerCase().includes('richmond')
       ? query
       : `${query.trim()}, Richmond, VA`;
@@ -36,7 +36,7 @@ export function useNominatim(): UseNominatimReturn {
     url.searchParams.set('format', 'json');
     url.searchParams.set('limit', '1');
     url.searchParams.set('viewbox', RICHMOND_VIEWBOX);
-    url.searchParams.set('bounded', '0'); // fall back outside viewbox if needed
+    url.searchParams.set('bounded', '0'); // allow results outside the richmond area
     url.searchParams.set('countrycodes', 'us');
 
     try {

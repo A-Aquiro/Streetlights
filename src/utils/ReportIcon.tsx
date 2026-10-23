@@ -7,7 +7,7 @@ interface Props {
   size?: number;
 }
 
-/** Renders a colored circle with a white SVG icon for the given report type. */
+/** shows a white icon on a colored circle */
 export default function ReportIcon({ typeId, color, size = 36 }: Props) {
   const svgSize = Math.round(size * 0.55);
 

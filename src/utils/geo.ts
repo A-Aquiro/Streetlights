@@ -4,7 +4,7 @@ export function haversineDistance(
   lat1: number, lng1: number,
   lat2: number, lng2: number,
 ): number {
-  const R = 3958.8; // miles
+  const R = 3958.8; // earth's radius in miles
   const dLat = toRad(lat2 - lat1);
   const dLng = toRad(lng2 - lng1);
   const a =
