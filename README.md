@@ -32,5 +32,3 @@ Project locations are approximate, and the project information comes from the Ci
 **Styling:** Tailwind CSS
 
 **Project data:** City of Richmond CIP Dashboard
-
-**Made for:** Richmond Civic Hackathon · March 2026 · Pillar 6 — Transportation Project Visibility
