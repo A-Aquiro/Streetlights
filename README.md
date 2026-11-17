@@ -12,7 +12,7 @@ City project information can be hard to find and full of technical language. Str
 
 Search for a Richmond address, explore nearby projects, and see what the work is, how much it costs, and when it's expected to be finished.
 
-## Features and How to use
+## Features
 
 - Search an address and find projects nearby
 - Explore projects on an interactive map
