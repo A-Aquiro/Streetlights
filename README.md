@@ -23,7 +23,7 @@ Search for a Richmond address, explore nearby projects, and see what the work is
 
 Project locations are approximate, and the project information comes from the City of Richmond CIP Dashboard. StreetLights is a community project, not an official City service.
 
-## Other info
+## Built With
 
 **Frontend:** React, TypeScript, and Vite
 
