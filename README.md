@@ -8,20 +8,18 @@ StreetLights is a web app made for the Hack For RVA in March 2026. Search an add
 
 ## About StreetLights
 
-City project information can be hard to find and full of technical language. StreetLights brings Richmond's Capital Improvement Plan projects together on a map and explains them in a way that's easier to understand.
+Project information about local construction exists, but it's hard to find and filled with technical terms. StreetLights brings Richmond's Capital Improvement Plan projects together on a map and explains them in a way that everyday citizens can understand.
 
-Search for a Richmond address, explore nearby projects, and see what the work is, how much it costs, and when it's expected to be finished.
+Search for a Richmond address and find information about what the project is and when it's expected to be finished.
 
 ## Features
 
 - Search an address and find projects nearby
 - Explore projects on an interactive map
-- Filter projects by category and phase
-- Check project details, budgets, timelines, and plain-language summaries
+- Filter projects by category
+- Check project details such as budgets, timelines, and manager contact information
 - Report local infrastructure issues and upvote reports from other residents
-- Use the app on desktop or mobile
-
-Project locations are approximate, and the project information comes from the City of Richmond CIP Dashboard. StreetLights is a community project, not an official City service.
+- Usable GUI on desktop or mobile
 
 ## Built With
 
@@ -32,3 +30,5 @@ Project locations are approximate, and the project information comes from the Ci
 **Styling:** Tailwind CSS
 
 **Project data:** City of Richmond CIP Dashboard
+
+StreetLights is a working prototype, not an official Richmond City service.
